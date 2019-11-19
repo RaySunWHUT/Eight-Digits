@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\aStar">
+      <UniqueIdentifier>{3ab9cbf9-b4a2-4c2e-9f35-4433e351c4f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\breadthFirstSearch">
+      <UniqueIdentifier>{1decd23d-0dd2-4842-b4be-5ec5563750c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core">
+      <UniqueIdentifier>{9644590d-e58d-4941-9b28-f0cb3450a6b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\dataStructure">
+      <UniqueIdentifier>{eb593783-5227-4034-a4dc-a64546fe225a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\function">
+      <UniqueIdentifier>{7ebac444-2aab-44ed-a91d-0ce04a7ca3a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\globalOptimizationSearch">
+      <UniqueIdentifier>{004d271f-db82-40f5-8d09-5467be5251a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\process">
+      <UniqueIdentifier>{b23f4f16-640d-4cd6-906a-c5bce313481c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\static">
+      <UniqueIdentifier>{a65b4f97-a923-4e25-9abb-49d5b6431c9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\test">
+      <UniqueIdentifier>{be3fe461-783c-4984-8e98-2a6fda0d731e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Header.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AStar.c">
+      <Filter>Source Files\aStar</Filter>
+    </ClCompile>
+    <ClCompile Include="BreadthFirst.c">
+      <Filter>Source Files\breadthFirstSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="Core.c">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="LinkedList.c">
+      <Filter>Source Files\dataStructure</Filter>
+    </ClCompile>
+    <ClCompile Include="Queue.c">
+      <Filter>Source Files\dataStructure</Filter>
+    </ClCompile>
+    <ClCompile Include="Function.c">
+      <Filter>Source Files\function</Filter>
+    </ClCompile>
+    <ClCompile Include="GlobalOptimization.c">
+      <Filter>Source Files\globalOptimizationSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="Process.c">
+      <Filter>Source Files\process</Filter>
+    </ClCompile>
+    <ClCompile Include="Test.c">
+      <Filter>Source Files\test</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="C:\Users\91328\Desktop\人工智能概论大作业\AICode\6.txt">
+      <Filter>Source Files\static</Filter>
+    </Text>
+    <Text Include="C:\Users\91328\Desktop\人工智能概论大作业\AICode\10.txt">
+      <Filter>Source Files\static</Filter>
+    </Text>
+    <Text Include="C:\Users\91328\Desktop\人工智能概论大作业\AICode\no.txt">
+      <Filter>Source Files\static</Filter>
+    </Text>
+  </ItemGroup>
+</Project>
