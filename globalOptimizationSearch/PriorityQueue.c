@@ -7,14 +7,27 @@
 
 #pragma warning(disable:4996)
 
-
-MinHpointer createMinHeap(int maxSize) {	// ´´½¨×îĞ¡¶Ñ
+/*
+ author: Sun Rui
+ time: 2019.11.23
+*/
+MinHpointer createMinHeap(int maxSize, long unique, int inversion) {	// ´´½¨×îĞ¡¶Ñ
 
 	MinHpointer minHeap = (MinHpointer)malloc(HSIZE);
-	minHeap->Data = (ElementType*)malloc((maxSize + 1) * ESIZE);
-	minHeap->Capacity = maxSize;
-	minHeap->Size = 0;
-	minHeap->Data[0] = MINDATA;   /* ÉÚ±ø½áµã */
+	minHeap->data = (ElementType*)malloc((maxSize + 1) * ESIZE);
+	minHeap->capacity = maxSize;
+	minHeap->size = 0;
+
+	Ipointer top = (Ipointer)malloc(ISIZE);
+	top->blockDirection = Unknown;
+	top->parent = NULL;
+	top->zero[0] = top->zero[1] = 0;
+	top->weight = MINDATA;
+	
+	minHeap->data[0] = top;   /* ÉÚ±ø½áµã */
+
+	minHeap->unique = unique;
+	minHeap->inversion = inversion;
 
 	return minHeap;
 
@@ -23,12 +36,12 @@ MinHpointer createMinHeap(int maxSize) {	// ´´½¨×îĞ¡¶Ñ
 
 bool isFull(MinHpointer minH) {	// ÅĞÂú
 
-	return (minH->Size == minH->Capacity);
+	return (minH->size == minH->capacity);
 
 }
 
 
-bool insert(MinHpointer minH, ElementType x) {    /* ³ÌĞò¾«¼ò */
+bool insertElement(MinHpointer minH, ElementType x) {    /* ³ÌĞò¾«¼ò */
 
 	int i = 0;   /* ¼´²åÈë½áµãºó¶ÑÖĞ×îºóÒ»¸ö½áµãµÄÎ»ÖÃ */
 
@@ -38,18 +51,17 @@ bool insert(MinHpointer minH, ElementType x) {    /* ³ÌĞò¾«¼ò */
 
 		return False;
 
-	}
-	else {
+	} else {
 
-		i = ++minH->Size;
+		i = ++minH->size;
 
-		for ( ; x < minH->Data[i / 2]; i = i / 2) {
+		for ( ; x->weight < minH->data[i / 2]->weight; i = i / 2) {
 
-			minH->Data[i] = minH->Data[i / 2];
+			minH->data[i] = minH->data[i / 2];
 
 		}
 
-		minH->Data[i] = x;
+		minH->data[i] = x;
 
 		return True;
 
@@ -58,9 +70,9 @@ bool insert(MinHpointer minH, ElementType x) {    /* ³ÌĞò¾«¼ò */
 }
 
 
-bool isEmpty(MinHpointer minH) {
+bool isHeapEmpty(MinHpointer minH) {
 
-	return (minH->Size == 0);
+	return (minH->size == 0);
 
 }
 
@@ -70,38 +82,38 @@ ElementType deleteMin(MinHpointer minH) {      /* Ãî£¡Ãî°¡£¡ */
 	int parent, child;
 	ElementType minItem, x;
 
-	if (isEmpty(minH)) {  /* ¿Õ¶Ñ */
+	if (isHeapEmpty(minH)) {  /* ¿Õ¶Ñ */
 
 		printf("min heap is empty. \n");
 		return ERROR;
 
 	}
 
-	minItem = minH->Data[1];    /* È¡³ö¸ù½áµã£¬×îĞ¡ÔªËØ */
-	x = minH->Data[minH->Size--];     /* È¡³ö×îºóÒ»¸öÔªËØ */
+	minItem = minH->data[1];    /* È¡³ö¸ù½áµã£¬×îĞ¡ÔªËØ */
+	x = minH->data[minH->size--];     /* È¡³ö×îºóÒ»¸öÔªËØ */
 
-	for (parent = 1; parent * 2 <= minH->Size; parent = child) {
+	for (parent = 1; parent * 2 <= minH->size; parent = child) {
 
 		child = parent * 2;
-		if ((child != minH->Size) && (minH->Data[child] > minH->Data[child + 1])) {   /* Î´µ½´ï×îºóÎ»ÖÃÇÒÓÒº¢×Ó < ×óº¢×Ó */
+		if ((child != minH->size) && (minH->data[child]->weight > minH->data[child + 1]->weight)) {   /* Î´µ½´ï×îºóÎ»ÖÃÇÒÓÒº¢×Ó < ×óº¢×Ó */
 
 			child++;    /* childÖ¸Ïò×óÓÒ½áµãÖĞµÄ½ÏĞ¡Öµ */
 
 		}
 
-		if (x <= minH->Data[child]) {	/* ÕÒµ½ºÏÊÊÎ»ÖÃ */
+		if (x->weight <= minH->data[child]->weight) {	/* ÕÒµ½ºÏÊÊÎ»ÖÃ */
 
 			break;
 
 		} else {    /* X < minH->Data[child] */
 
-			minH->Data[parent] = minH->Data[child];
+			minH->data[parent] = minH->data[child];
 
 		}
 
 	}
 
-	minH->Data[parent] = x;
+	minH->data[parent] = x;
 
 	return minItem;
 
@@ -113,32 +125,32 @@ void percDown(MinHpointer minH, int p) {	// ÏÂÂË
 	int parent, child;
 	ElementType x;
 
-	x = minH->Data[p];	// Ã¿²ã¸ù½Úµã
+	x = minH->data[p];	// Ã¿²ã¸ù½Úµã
 
-	for (parent = p; parent * 2 <= minH->Size; parent = child) {
+	for (parent = p; parent * 2 <= minH->size; parent = child) {
 
 		child = parent * 2;   /* ÏÈÖ¸Ïò×ó×ÓÊ÷ */
 
-		if ((child != minH->Size) && (minH->Data[child] > minH->Data[child + 1])) {
+		if ((child != minH->size) && (minH->data[child]->weight > minH->data[child + 1]->weight)) {
 
 			child++;    /* µ÷Õû£¬Ö¸Ïò½ÏĞ¡×ÓÊ÷ */
 
 		}
 
-		if (x <= minH->Data[child]) {
+		if (x->weight <= minH->data[child]->weight) {
 
 			break;
 
 		}
 		else {
 
-			minH->Data[parent] = minH->Data[child];
+			minH->data[parent] = minH->data[child];
 
 		}
 
 	}
 
-	minH->Data[parent] = x;
+	minH->data[parent] = x;
 
 }
 
@@ -147,7 +159,7 @@ void bulidHeap(MinHpointer minH) {	// ½«ÒÑ´æÔÚµÄN¸öÔªËØ°´×îĞ¡¶ÑµÄÒªÇó´æ·ÅÓÚÒ»Î¬Ê
 
 	int i = 0;
 
-	for (i = minH->Size / 2; i >= 1; i--) {
+	for (i = minH->size / 2; i >= 1; i--) {
 
 		percDown(minH, i);
 
@@ -156,13 +168,13 @@ void bulidHeap(MinHpointer minH) {	// ½«ÒÑ´æÔÚµÄN¸öÔªËØ°´×îĞ¡¶ÑµÄÒªÇó´æ·ÅÓÚÒ»Î¬Ê
 }
 
 
-void output(MinHpointer minH) {
+void outputHeap(MinHpointer minH) {
 
 	int i = 0;
 
-	for (i = 1; i <= minH->Size; i++) {
+	for (i = 1; i <= minH->size; i++) {
 
-		printf("%4d", minH->Data[i]);
+		printf("%4d", minH->data[i]->weight);
 
 	}
 

@@ -8,7 +8,10 @@
 
 #pragma warning(disable:4996)
 
-
+/*
+ author: Sun Rui
+ time: 2018-09-22
+*/
 void insertNode(Cpointer headp, Ipointer node) {
 	
 	Cpointer newp = (Cpointer)malloc(CSIZE);

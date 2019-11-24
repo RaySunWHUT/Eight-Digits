@@ -8,7 +8,6 @@
 #pragma warning(disable:4996)
 
 int main() {
-
 	
 	Qpointer open = initialize();
 

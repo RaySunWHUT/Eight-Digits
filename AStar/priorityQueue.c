@@ -7,7 +7,10 @@
 
 #pragma warning(disable:4996)
 
-
+/*
+ author: Sun Rui
+ time: 2019-11-23
+*/
 MinHpointer createMinHeap(int maxSize, long unique, int inversion) {	// 创建最小堆
 
 	MinHpointer minHeap = (MinHpointer)malloc(HSIZE);

@@ -1,9 +1,10 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<time.h>
 #include<math.h>
+#include<time.h>
 #include<string.h>
 #include "Header.h"
+
 #pragma warning(disable:4996)
 
 

@@ -12,6 +12,8 @@
 	inversion: 标准九宫格的逆序数;
 	number: 已存在九宫格布局数量;
 	headp->nine[100]: 用来存储已经存在的九宫格布局;
+	author: Sun Rui
+	time: 2019.11.16
 */
 Qpointer createQueue(int MAXSize, long unique, int inversion) {
 

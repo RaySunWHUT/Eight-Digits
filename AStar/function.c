@@ -10,6 +10,8 @@
 
 /**
 * sum为逆序数的个数
+* author: Sun Rui
+* time: 2019.11.17
 */
 int countInverseNumber(long number) { // 456
 

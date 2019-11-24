@@ -8,22 +8,22 @@
 #pragma warning(disable:4996)
 
 /*
- 宽度优先搜索, 无法求解移动 31 步的最大解空间
- author: Sun Rui
- time: 2019-11-24
+  全局择优算法: 可求解"八数码"问题的最大解空间
+  author: Sun Rui 
+  time: 2019.11.24
 */
-void handle(Qpointer open, Ipointer begin) {	// 处理流
+
+void handle(MinHpointer open, Ipointer begin) {	// 处理流
 
 	Ipointer node = begin;
 
-	if (isSuccess(begin->digit, open->unique)) {	// 若首结点即为目标节点, 直接结束
+	if (isSuccess(node->digit, open->unique)) {	// 若首结点即为目标节点, 直接结束
 
 		printf("\nsearch successful! \n");
 
 		printf("首结点即为目标节点, 无需移动(移动 0 步到达目标状态). \n");
 
-	}
-	else {	// 首结点非目标节点
+	} else {	// 首结点非目标节点
 
 		bool isOk = Unknown;
 
@@ -31,18 +31,18 @@ void handle(Qpointer open, Ipointer begin) {	// 处理流
 
 			if (judgeParity(countInverseNumber(assistInverse(node->digit)), open->inversion)) {	// 若逆序数奇偶性相同, 则进行; 否则, 跳过
 
-				searchFollow(open, node);
+				globalOptimizationFollow(open, node);
 
 			}
 
-			if (isEmpty(open)) {	// (队列)open表为空
+			if (isHeapEmpty(open)) {	// (队列)open表为空
 
 				isOk = False;
 				break;
 
 			}
 
-			node = deleteQ(open);
+			node = deleteMin(open);
 
 			if (isSuccess(node->digit, open->unique)) {	// 若找到解决方案, 则跳出
 
@@ -61,8 +61,7 @@ void handle(Qpointer open, Ipointer begin) {	// 处理流
 
 			printf("\n最少移动 %d 步到达目标状态 \n", times);
 
-		}
-		else if (isOk == False) {
+		} else if (isOk == False) {
 
 			printf("\nsearch failed! \n");
 			printf("\n目标状态不可达 \n");
@@ -155,11 +154,6 @@ bool move(Ipointer node, Direction way) {	// 移动 "0"
 		node->blockDirection = getBlockDirection(way);	// 赋值回退方向
 
 	}
-	else {
-
-		free(node);
-
-	}
 
 	return flag;
 
@@ -212,36 +206,6 @@ Direction getBlockDirection(Direction way) {	// 获取禁止移动方向: 本次移动的反方
 }
 
 
-void searchFollow(Qpointer open, Ipointer begin) {	// 寻找后继节点
-
-	Ipointer node = NULL;
-
-	for (Direction way = UP; way <= RIGHT; way++) {	// 尝试 "上、下、左、右" 所有四个方向, 判断是否可移动
-
-		if (way != begin->blockDirection) {	// 非回退方向
-
-			node = createNode(begin);	// 依据父节点创建新节点
-
-			bool flag = move(node, way);	// 移动"0", 为新节点产生新布局
-
-			if (flag == True) {	// 若能够产生新布局, 即, 可移动
-
-				node->parent = begin;	// 赋值回溯指针
-
-				if (judgeParity(countInverseNumber(assistInverse(node->digit)), open->inversion)) {
-					addQ(open, node);
-
-				}
-
-			}
-
-		}
-
-	}
-
-}
-
-
 int backtrack(Ipointer end) {	// 回溯
 
 	Ipointer p = end;
@@ -282,11 +246,97 @@ bool judgeParity(int begin, int open) {		// 判断新产生的九宫格的逆序数的个数的奇
 
 		return True;
 
-	}
-	else {
+	} else {
 
 		return False;
 
 	}
+
+}
+
+
+void globalOptimizationFollow(MinHpointer open, Ipointer begin) {
+
+	Ipointer node = NULL;
+
+	int k = 0;
+
+	for (Direction way = UP; way <= RIGHT; way++) {	// 尝试 "上、下、左、右" 所有四个方向, 判断是否可移动
+
+		if (way != begin->blockDirection) {	// 非回退方向
+
+			node = createNode(begin);	// 依据父节点创建新节点
+
+			bool flag = move(node, way);	// 移动"0", 为新节点产生新布局
+
+			if (flag == True) {	// 若能够产生新布局, 即, 可移动
+
+				if (judgeParity(countInverseNumber(assistInverse(node->digit)), open->inversion)) {
+
+					node->parent = begin;	// 赋值回溯指针
+
+					getWeight(open, node);
+
+					insertElement(open, node);
+
+				}
+
+			}
+
+		}
+
+	}
+
+}
+
+
+void getWeight(MinHpointer open, Ipointer node) {	// 获取权重, 权重越小, 越先达到目标状态
+
+	int diff = 0;	// 记录不同元素个数
+
+	int deep = 0;	// root为 1 层
+
+	int weight = 0;
+
+	Ipointer p = node;
+
+	for (int i = 0; i < 3; i++) {
+
+		for (int j = 0; j < 3; j++) {
+
+			if (node->digit[i][j] != open->standard[i][j]) {
+
+				diff++;
+
+			}
+
+		}
+
+	}
+
+	deep = getDeep(node);
+
+	weight = diff + deep;	// 权重越小(即, 浅 + 少, 深度约浅、不同元素越少), 相似度越高, 路径越短
+
+	node->weight = weight;
+
+}
+
+
+int getDeep(Ipointer node) {
+
+	Ipointer p = node;
+
+	int times = 0;
+
+	while (p != NULL) {
+
+		p = p->parent;
+
+		times++;
+
+	}
+
+	return times;
 
 }
