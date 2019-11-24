@@ -7,17 +7,14 @@
 
 #pragma warning(disable:4996)
 
-/**
-* 三种测试用例文件包含在static文件夹中
-* author: Sun Ray
-*/
 int main() {
 
+	
 	Qpointer open = initialize();
 
-	Ipointer begin = input(open);
+	Ipointer begin = input();
 
-	processBlock(open, begin);
+	run(open, begin);
 
 	return 0;
 

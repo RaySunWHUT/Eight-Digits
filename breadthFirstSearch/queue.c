@@ -2,19 +2,16 @@
 #include<stdlib.h>
 #include<string.h>
 #include<time.h>
-#include<string.h>
 #include"Header.h"
 
 #pragma warning(disable:4996)
 
 /**
-* queue operation
-* author: Sun Ray 2019.11.19
 *	创建队列,
-*	unique: 标准九宫格的布局;
-*	inversion: 标准九宫格的逆序数;
-*	number: 已存在九宫格布局数量;
-*	headp->nine[100]: 用来存储已经存在的九宫格布局;
+	unique: 标准九宫格的布局;
+	inversion: 标准九宫格的逆序数;
+	number: 已存在九宫格布局数量;
+	headp->nine[100]: 用来存储已经存在的九宫格布局;
 */
 Qpointer createQueue(int MAXSize, long unique, int inversion) {
 
@@ -122,38 +119,6 @@ void output(Qpointer headp) {	// 输出队列
 		Front = Front->Next;
 
 		printf("------------------ \n");
-
-	}
-
-}
-
-
-void destoryQ(Qpointer headp) {	// 清空队列中的所有元素
-
-	Npointer front = NULL;
-
-	Npointer last = NULL;
-
-	front = headp->Front;
-
-	while (!isEmpty(headp)) {
-
-		if (headp->Front == headp->Rear) {    /* 若队列中只有一个结点 */
-
-			headp->Front = headp->Rear = NULL;
-
-		}
-		else {
-
-			headp->Front = headp->Front->Next;
-
-		}
-
-		last = front;
-
-		front = front->Next;
-
-		free(last);	// 因为要回溯生成路径, 所以, 此处取消free()操作
 
 	}
 
